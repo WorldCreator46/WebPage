@@ -12,7 +12,7 @@
     <div id="search">
         <input type="text" name="SearchBox" id="SB" placeholder="파일명 검색">
     </div>
-    <table id="list">
+    <table id="list" data-filelistdata='{{FileListData}}'>
         <!-- 여기에 파일 목록 -->
     </table>
     <script src="{{url_for('static', filename='js/script.js')}}"></script>
