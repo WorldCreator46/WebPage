@@ -28,12 +28,18 @@ def getfilesize(fs):
 
 
 with open("Path.txt", "r", encoding="UTF-8") as f:
-    path = f.readline().strip()
-    file_list = dict()
-    for n in os.listdir(path):
-        file_list[n] = getfilesize(f"{path}{n}")
-    files_text = json.dumps(file_list, indent=2, ensure_ascii=False)
+    import numpy as np
 
+    cnt = 15
+    path = f.readline().strip()
+    file_list = os.listdir(path)
+    file_count = len(file_list)
+    temp = [[0]*15 for i in range(file_count // cnt)]
+    if file_count % cnt != 0:
+        temp += [[0] * (file_count % cnt)]
+    for i, n in enumerate(file_list):
+        temp[i // 15][i % 15] = (n, getfilesize(f"{path}{n}"))
+    files_text = json.dumps(temp, indent=2, ensure_ascii=False)
 
 app = Flask(__name__)
 
