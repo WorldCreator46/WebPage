@@ -8,9 +8,15 @@
     <script src="{{url_for('static', filename='js/jquery.js')}}"></script>
 </head>
 <body>
-    <h1>파일 목록</h1>
+    <div id="header">
+        <button id="Name-Ascending">파일명<br>오름차순</button>
+        <button id="Name-Descending">파일명<br>내림차순</button>
+        <h1>파일 목록</h1>
+        <button id="Volume-Ascending">용량<br>오름차순</button>
+        <button id="Volume-Descending">용량<br>내림차순</button>
+    </div>
     <div id="search">
-        <input type="text" name="SearchBox" id="SB" placeholder="파일명 검색">
+        <input type="text" name="SearchBox" id="SB" placeholder="파일명 검색" onkeyup="if(window.event.keyCode==13){search()}">
     </div>
     <table id="list" data-filelistdata='{{FileListData}}'>
         <thead>
@@ -38,7 +44,17 @@
     <table id="numbers" data-number="0">
         <tfoot>
             <tr>
-                <td><a href="javascript:;"></a></td>
+                <td>
+                    <button class="PageNumber" name="Start">◁</button>
+                    <button class="PageNumber" name="LeftJump">◀</button>
+                    <button class="slot" name="0">1</button>
+                    <button class="slot" name="1">2</button>
+                    <button class="slot" name="2">3</button>
+                    <button class="slot" name="3">4</button>
+                    <button class="slot" name="4">5</button>
+                    <button class="PageNumber" name="RightJump">▶</button>
+                    <button class="PageNumber" name="End">▷</button>
+                </td>
             </tr>
         </tfoot>
     </table>
