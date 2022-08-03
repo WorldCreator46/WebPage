@@ -32,16 +32,25 @@ f = open("Path.txt", "r", encoding="UTF-8")
 path = f.readline().strip()
 file_list = os.listdir(path)
 translation_volume_list = [(n, getfilesize(fs=f"{path}{n}")) for n in file_list]
-volume_list = [(os.path.getsize(f"{path}{n}"),n) for n in file_list]
+volume_list = [(os.path.getsize(f"{path}{n}"), n) for n in file_list]
 bubble_sort(volume_list)
 f.close()
+cnt = 15
 
-def create(sort_number=0):
-    cnt = 15
-    file_count = len(file_list)
-    temp = [[0] * 15 for i in range(file_count // cnt)]
+
+def list_create(file_info_list=None):
+    if file_info_list is None:
+        file_count = len(file_list)
+    else:
+        file_count = len(file_info_list)
+    temp = [[0] * 15 for _ in range(file_count // cnt)]
     if file_count % cnt != 0:
         temp += [[0] * (file_count % cnt)]
+    return temp
+
+
+def create(sort_number=0):
+    temp = list_create()
     if sort_number == 0:
         for i, n in enumerate(translation_volume_list):
             temp[i // 15][i % 15] = n
@@ -54,6 +63,14 @@ def create(sort_number=0):
     elif sort_number == 3:
         for i, n in enumerate(reversed(volume_list)):
             temp[i // 15][i % 15] = (n[1], getfilesize(file_size=n[0]))
+    return json.dumps(temp, indent=2, ensure_ascii=False)
+
+
+def jsonlist(search_list):
+    search_translation_volume_list = [(n, getfilesize(fs=f"{path}{n}")) for n in search_list]
+    temp = list_create(search_translation_volume_list)
+    for i, n in enumerate(search_translation_volume_list):
+        temp[i // 15][i % 15] = n
     return json.dumps(temp, indent=2, ensure_ascii=False)
 
 
@@ -81,15 +98,35 @@ def sorted_file_list(classification):
 @app.route('/search/<word>')
 def search_word(word):
     search_list = [fn for fn in file_list if word in fn]
-    search_translation_volume_list = [(n, getfilesize(fs=f"{path}{n}")) for n in search_list]
-    cnt = 15
-    file_count = len(search_translation_volume_list)
-    temp = [[0] * 15 for i in range(file_count // cnt)]
-    if file_count % cnt != 0:
-        temp += [[0] * (file_count % cnt)]
-    for i, n in enumerate(search_translation_volume_list):
-        temp[i // 15][i % 15] = n
-    return render_template('index.html', FileListData=json.dumps(temp, indent=2, ensure_ascii=False))
+    return render_template('index.html', FileListData=jsonlist(search_list))
+
+
+@app.route('/search/and/<word>')
+def and_search_word(word):
+    words = word.split()
+    commands = ["if "]
+    for w in words:
+        commands.append(f""""{w}" in fn and """)
+    search_set = set()
+    for fn in file_list:
+        exec(f"{''.join(commands)[0:-4]}: search_set.add(fn)")
+    search_list = list(search_set)
+    bubble_sort(search_list)
+    print(search_list)
+    return render_template('index.html', FileListData=jsonlist(search_list))
+
+
+@app.route('/search/or/<word>')
+def or_search_word(word):
+    words = word.split(',')
+    search_set = set()
+    for fn in file_list:
+        for wd in words:
+            if wd in fn:
+                search_set.add(fn)
+    search_list = list(search_set)
+    bubble_sort(search_list)
+    return render_template('index.html', FileListData=jsonlist(search_list))
 
 
 @app.route('/download/<filename>')
