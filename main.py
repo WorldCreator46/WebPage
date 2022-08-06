@@ -14,13 +14,14 @@ def bubble_sort(arr):
         end = last_swap
 
 
-def getfilesize(fs='', file_size=-1):
+def get_filesize(fs='', file_size=-1):
     import math
     if file_size != -1:
         size = file_size
     else:
         size = os.path.getsize(fs)
-    if size == 0: return "0B"
+    if size == 0:
+        return "0B"
     size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
     i = int(math.floor(math.log(size, 1024)))
     p = math.pow(1024, i)
@@ -31,7 +32,7 @@ def getfilesize(fs='', file_size=-1):
 f = open("Path.txt", "r", encoding="UTF-8")
 path = f.readline().strip()
 file_list = os.listdir(path)
-translation_volume_list = [(n, getfilesize(fs=f"{path}{n}")) for n in file_list]
+translation_volume_list = [(n, get_filesize(fs=f"{path}{n}")) for n in file_list]
 volume_list = [(os.path.getsize(f"{path}{n}"), n) for n in file_list]
 bubble_sort(volume_list)
 f.close()
@@ -59,15 +60,15 @@ def create(sort_number=0):
             temp[i // 15][i % 15] = n
     elif sort_number == 2:
         for i, n in enumerate(volume_list):
-            temp[i // 15][i % 15] = (n[1], getfilesize(file_size=n[0]))
+            temp[i // 15][i % 15] = (n[1], get_filesize(file_size=n[0]))
     elif sort_number == 3:
         for i, n in enumerate(reversed(volume_list)):
-            temp[i // 15][i % 15] = (n[1], getfilesize(file_size=n[0]))
+            temp[i // 15][i % 15] = (n[1], get_filesize(file_size=n[0]))
     return json.dumps(temp, indent=2, ensure_ascii=False)
 
 
 def jsonlist(search_list):
-    search_translation_volume_list = [(n, getfilesize(fs=f"{path}{n}")) for n in search_list]
+    search_translation_volume_list = [(n, get_filesize(fs=f"{path}{n}")) for n in search_list]
     temp = list_create(search_translation_volume_list)
     for i, n in enumerate(search_translation_volume_list):
         temp[i // 15][i % 15] = n
@@ -108,8 +109,8 @@ def and_search_word(word):
     for w in words:
         commands.append(f""""{w}" in fn and """)
     search_set = set()
-    for fn in file_list:
-        exec(f"{''.join(commands)[0:-4]}: search_set.add(fn)")
+    for _ in file_list:
+        exec(f"{''.join(commands)[0:-4]}: search_set.add(_)")
     search_list = list(search_set)
     bubble_sort(search_list)
     print(search_list)
@@ -143,5 +144,4 @@ def download_file(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port='913')
-
+    app.run(debug=True, host='0.0.0.0', port=913)
