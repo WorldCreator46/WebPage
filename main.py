@@ -107,13 +107,12 @@ def and_search_word(word):
     words = word.split()
     commands = ["if "]
     for w in words:
-        commands.append(f""""{w}" in fn and """)
+        commands.append(f""""{w}" in _ and """)
     search_set = set()
     for _ in file_list:
         exec(f"{''.join(commands)[0:-4]}: search_set.add(_)")
     search_list = list(search_set)
     bubble_sort(search_list)
-    print(search_list)
     return render_template('index.html', FileListData=jsonlist(search_list))
 
 
