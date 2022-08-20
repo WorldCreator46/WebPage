@@ -142,5 +142,17 @@ def download_file(filename):
                      as_attachment=True)
 
 
+@app.route('/upload')
+def download_file(filename):
+    mime_type = ""
+    if filename.split(".")[1] == "7z":
+        mime_type = 'application/x-7z-compressed'
+    elif filename.split(".")[1] == "zip":
+        mime_type = 'application/zip'
+    return send_file(path_or_file=f"{path}{filename}",
+                     mimetype=mime_type,
+                     attachment_filename=filename,
+                     as_attachment=True)
+
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=913)
