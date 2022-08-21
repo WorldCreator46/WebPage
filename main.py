@@ -143,7 +143,7 @@ def download_file(filename):
 
 
 @app.route('/upload')
-def download_file(filename):
+def upload_file(filename):
     mime_type = ""
     if filename.split(".")[1] == "7z":
         mime_type = 'application/x-7z-compressed'
