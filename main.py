@@ -143,7 +143,7 @@ def download_file(filename):
 
 
 @app.route('/upload')
-def upload_file(filename):
+def upload_file():
     return render_template("")
 
 if __name__ == '__main__':
