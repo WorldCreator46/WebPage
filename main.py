@@ -1,7 +1,7 @@
 from flask import *
 import os
 import json
-
+from werkzeug.utils import secure_filename
 
 def bubble_sort(arr):
     end = len(arr) - 1
@@ -146,9 +146,14 @@ def download_file(filename):
 def upload_file():
     return render_template("")
 
-@app.route('/uploader')
-def upload_file():
-    return render_template("")
+
+@app.route('/uploader', method=['GET', 'POST'])
+def uploader_file():
+    if request.method == 'POST':
+        _ = request.files['file']
+        _.save(secure_filename(_.filename))
+        return render_template("")
+
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=913)
