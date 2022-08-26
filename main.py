@@ -154,6 +154,5 @@ def uploader_file():
         _.save(secure_filename(_.filename))
         return render_template("")
 
-
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=913)
