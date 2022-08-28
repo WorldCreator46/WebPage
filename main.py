@@ -76,7 +76,7 @@ def jsonlist(search_list):
 
 
 app = Flask(__name__)
-
+app.config['UPLOAD_FOLDER'] = path
 
 @app.route('/')
 def main():
@@ -142,18 +142,19 @@ def download_file(filename):
                      as_attachment=True)
 
 
-@app.route('/upload')
-def upload_file():
-    return render_template("")
+@app.route('/uploader')
+def file_uploader():
+    return render_template("uploader.html")
 
 
-@app.route('/uploader', method=['GET', 'POST'])
-def uploader_file():
+@app.route('/upload', methods=['GET', 'POST'])
+def file_uploading():
     if request.method == 'POST':
         _ = request.files['file']
         _.save(secure_filename(_.filename))
-        return render_template("")
-
+        return render_template('index.html', FileListData=create(), UploadCheck=True)
+    else:
+        return render_template('index.html', FileListData=create(), UploadCheck=False)
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=913)
