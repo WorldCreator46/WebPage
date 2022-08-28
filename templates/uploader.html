@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Uploader</title>
+    <link rel="shortcut icon" href="#">
+    <style>
+        input{
+            width:80%;
+            height:80%;
+            font-size:40px;
+        }
+    </style>
 </head>
 <body>
-    <form action="http://localhost:5000/uploader"
+    <form action="http://192.168.45.121:5000/upload"
           method="POST"
           enctype="multipart/form-data">
         <input type="file" name="file" />
+        <br><br><br><br><br><br>
         <input type="submit" />
     </form>
 </body>

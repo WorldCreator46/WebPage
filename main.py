@@ -1,7 +1,6 @@
 from flask import *
 import os
 import json
-from werkzeug.utils import secure_filename
 
 def bubble_sort(arr):
     end = len(arr) - 1
@@ -147,14 +146,15 @@ def file_uploader():
     return render_template("uploader.html")
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/upload', methods=['POST'])
 def file_uploading():
-    if request.method == 'POST':
-        _ = request.files['file']
-        _.save(secure_filename(_.filename))
-        return render_template('index.html', FileListData=create(), UploadCheck=True)
-    else:
-        return render_template('index.html', FileListData=create(), UploadCheck=False)
+    if 'file' not in request.files:
+        return render_template('index.html', FileListData=create(), UploadCheck="파일을 찾을 수 없음")
+    upload_file = request.files['file']
+    if upload_file.filename == "":
+        return render_template('index.html', FileListData=create(), UploadCheck="파일 이름을 찾을 수 없음")
+    upload_file.save(os.path.join(app.config['UPLOAD_FOLDER'], upload_file.filename))
+    return render_template('index.html', FileListData=create(), UploadCheck="파일 업로드 성공")
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=913)
+    app.run(debug=False, host='0.0.0.0')
