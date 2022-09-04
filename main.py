@@ -156,6 +156,5 @@ def file_uploading():
     upload_file.save(os.path.join(app.config['UPLOAD_FOLDER'], upload_file.filename))
     return render_template('index.html', FileListData=create(), UploadCheck="파일 업로드 성공")
 
-
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
