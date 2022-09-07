@@ -147,7 +147,7 @@ def file_uploader():
 
 
 @app.route('/upload', methods=['POST'])
-def file_uploading(): 
+def file_uploading():
     if 'file' not in request.files:
         return render_template('index.html', FileListData=create(), UploadCheck="파일을 찾을 수 없음")
     upload_file = request.files['file']
