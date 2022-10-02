@@ -148,12 +148,13 @@ def file_uploader():
 
 @app.route('/upload', methods=['POST'])
 def file_uploading():
-    if 'file' not in request.files:
+    if 'file[]' not in request.files:
         return render_template('index.html', FileListData=create(), UploadCheck="파일을 찾을 수 없음")
-    upload_file = request.files['file']
-    if upload_file.filename == "":
-        return render_template('index.html', FileListData=create(), UploadCheck="파일 이름을 찾을 수 없음")
-    upload_file.save(os.path.join(app.config['UPLOAD_FOLDER'], upload_file.filename))
+    upload_files = request.files.getlist("file[]")
+    for upload_file in upload_files:
+        if upload_file.filename == "":
+            return render_template('index.html', FileListData=create(), UploadCheck="파일 이름을 찾을 수 없음")
+        upload_file.save(os.path.join(app.config['UPLOAD_FOLDER'], upload_file.filename))
     return render_template('index.html', FileListData=create(), UploadCheck="파일 업로드 성공")
 
 
