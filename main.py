@@ -2,6 +2,7 @@ from flask import *
 import os
 import json
 
+
 def bubble_sort(arr):
     end = len(arr) - 1
     while end > 0:
@@ -76,6 +77,7 @@ def jsonlist(search_list):
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = path
+
 
 @app.route('/')
 def main():
